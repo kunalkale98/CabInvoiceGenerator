@@ -34,4 +34,12 @@ public class InvoiceTest {
         int totalFare = invoice.totalFare(rideList);
         Assert.assertEquals(257,totalFare);
     }
+
+    @Test
+    public void givenData_ToGetAverageFarePerRide_ShouldReturnAvg(){
+        int totalFare = invoice.totalFare(rideList);
+        int noOfRides = invoice.getTotalRides(rideList);
+        int avgFare = (int) invoice.averageFare(totalFare,noOfRides);
+        Assert.assertEquals(85,avgFare);
+    }
 }

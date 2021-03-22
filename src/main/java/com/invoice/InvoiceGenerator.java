@@ -22,5 +22,15 @@ public class InvoiceGenerator {
         return totalFare;
     }
 
+    public int getTotalRides(List<Ride> rideList){
+        int rides = rideList.size();
+        System.out.println("No of Rides: "+rides);
+        return rides;
+    }
 
+    public float averageFare(int totalFare,int rides){
+        float avgFare = totalFare/rides;
+        System.out.println("Average Fare Per Ride: "+avgFare);
+        return avgFare;
+    }
 }
