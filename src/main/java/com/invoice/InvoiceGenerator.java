@@ -1,6 +1,8 @@
 package com.invoice;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InvoiceGenerator {
     private static final int COST_PER_KM = 10;
@@ -32,5 +34,10 @@ public class InvoiceGenerator {
         float avgFare = totalFare/rides;
         System.out.println("Average Fare Per Ride: "+avgFare);
         return avgFare;
+    }
+
+    public Invoice invoiceData(int noOfRides,int totalFare,int avgFare){
+        Invoice invoiceData = new Invoice(noOfRides,totalFare,avgFare);
+        return invoiceData;
     }
 }
