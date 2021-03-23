@@ -5,20 +5,32 @@ import java.util.List;
 import java.util.Map;
 
 public class InvoiceGenerator {
-    private static final int COST_PER_KM = 10;
-    private static final int COST_PER_MIN = 1;
-    private static final int MIN_FARE = 5;
+    enum RideType{
+        Normal(10,1,5),
+        Premium(15,2,20);
 
-    public int calculateFare(int distance,int time){
-        int fare = Math.max(COST_PER_KM*distance + COST_PER_MIN*time , MIN_FARE);
+        private final int COST_PER_KM;
+        private final int COST_PER_MIN;
+        private final int MIN_FARE;
+
+        RideType(int costPerKm, int costPerMin, int minFare){
+            this.COST_PER_KM = costPerKm;
+            this.COST_PER_MIN = costPerMin;
+            this.MIN_FARE = minFare;
+        }
+
+    }
+
+    public int calculateFare(int distance,int time, RideType rideType){
+        int fare = Math.max(rideType.COST_PER_KM*distance + rideType.COST_PER_MIN*time , rideType.MIN_FARE);
         System.out.println("Fare: "+fare);
         return fare;
     }
 
-    public int totalFare(List<Ride> rideList){
+    public int totalFare(List<Ride> rideList, RideType rideType){
         int totalFare = 0;
         for (Ride ride: rideList) {
-            totalFare += calculateFare(ride.distance,ride.time);
+            totalFare += calculateFare(ride.distance,ride.time,rideType);
         }
         System.out.println("Total Fare: "+totalFare);
         return totalFare;

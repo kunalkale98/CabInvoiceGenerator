@@ -29,19 +29,19 @@ public class InvoiceTest {
     public void givenData_ToCalculateFare_ShouldReturnFare() {
         int distance = 10;
         int time = 15;
-        int fare = invoice.calculateFare(distance,time);
+        int fare = invoice.calculateFare(distance,time,InvoiceGenerator.RideType.Normal);
         Assert.assertEquals(fare,115);
     }
 
     @Test
     public void givenData_ToFindTotalFare_ShouldReturnTotalFare() {
-        int totalFare = invoice.totalFare(rideList1);
+        int totalFare = invoice.totalFare(rideList1,InvoiceGenerator.RideType.Normal);
         Assert.assertEquals(175,totalFare);
     }
 
     @Test
     public void givenData_ToGetAverageFarePerRide_ShouldReturnAvg(){
-        int totalFare = invoice.totalFare(rideList1);
+        int totalFare = invoice.totalFare(rideList1, InvoiceGenerator.RideType.Normal);
         int noOfRides = invoice.getTotalRides(rideList1);
         int avgFare = (int) invoice.averageFare(totalFare,noOfRides);
         Assert.assertEquals(87,avgFare);
@@ -52,14 +52,14 @@ public class InvoiceTest {
         rideRepository = new RideRepository();
         List<Invoice> expectedInvoice = new ArrayList<>();
         int userId = 1;
-        int totalFare = invoice.totalFare(rideList1);
+        int totalFare = invoice.totalFare(rideList1, InvoiceGenerator.RideType.Normal);
         int noOfRides = invoice.getTotalRides(rideList1);
         int avgFare = (int) invoice.averageFare(totalFare,noOfRides);
         Invoice data = invoice.invoiceData(noOfRides,totalFare,avgFare);
         expectedInvoice.add(data);
         rideRepository.addInvoice(userId,data);
 
-        totalFare = invoice.totalFare(rideList2);
+        totalFare = invoice.totalFare(rideList2, InvoiceGenerator.RideType.Normal);
         noOfRides = invoice.getTotalRides(rideList2);
         avgFare = (int) invoice.averageFare(totalFare,noOfRides);
         data = invoice.invoiceData(noOfRides,totalFare,avgFare);
@@ -68,4 +68,28 @@ public class InvoiceTest {
         List<Invoice> result = rideRepository.getRideInvoices(1);
         Assert.assertEquals(expectedInvoice,result);
     }
+
+    @Test
+    public void givenData_ToCheckBothPremiumAndNormalRide_ShouldReturnRideList() {
+        rideRepository = new RideRepository();
+        List<Invoice> expectedInvoice = new ArrayList<>();
+        int userId = 1;
+        int totalFare = invoice.totalFare(rideList1, InvoiceGenerator.RideType.Normal);
+        int noOfRides = invoice.getTotalRides(rideList1);
+        int avgFare = (int) invoice.averageFare(totalFare,noOfRides);
+        Invoice data = invoice.invoiceData(noOfRides,totalFare,avgFare);
+        expectedInvoice.add(data);
+        rideRepository.addInvoice(userId,data);
+
+        totalFare = invoice.totalFare(rideList2, InvoiceGenerator.RideType.Premium);
+        noOfRides = invoice.getTotalRides(rideList2);
+        avgFare = (int) invoice.averageFare(totalFare,noOfRides);
+        data = invoice.invoiceData(noOfRides,totalFare,avgFare);
+        expectedInvoice.add(data);
+        rideRepository.addInvoice(userId,data);
+        List<Invoice> result = rideRepository.getRideInvoices(1);
+        Assert.assertEquals(expectedInvoice,result);
+    }
+
+
 }
